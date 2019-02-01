@@ -1,0 +1,9 @@
+com\scg\domain\Consultant.class
+com\scg\domain\ConsultantTime.class
+com\scg\domain\Account.class
+com\scg\domain\TimeCard.class
+com\scg\domain\ClientAccount.class
+com\scg\util\PersonalName.class
+com\scg\domain\Skill.class
+app\Assignment02.class
+com\scg\domain\NonBillableAccount.class
