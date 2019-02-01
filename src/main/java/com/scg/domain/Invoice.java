@@ -3,10 +3,18 @@
  */
 package com.scg.domain;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.Thread.State;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.scg.util.Address;
+import com.scg.util.StateCode;
 
 /**
  * Invoice encapsulates the attributes and behavior to create client invoices
@@ -23,17 +31,24 @@ import java.util.List;
  */
 public final class Invoice {
 
+	static String companyName; // = "The Small Consulting Group";
+	static Address businessAddress;
+	static String PROP_FILE_NAME = "invoice.properties";
+
 	ClientAccount client;
 	Month invoiceMonth;
 	Integer invoiceYear;
 	List<InvoiceLineItem> invoiceItems = new ArrayList<InvoiceLineItem>();
-//	InvoiceLineItem InvoiceLineItem;
 
-//Construct an Invoice for a client. The time period is set from the beginning to the end of the month specified.
+	// Construct an Invoice for a client. The time period is set from the beginning
+	// to the end of the month specified.
 	public Invoice(ClientAccount client, Month invoiceMonth, int invoiceYear) {
 		this.client = client;
 		this.invoiceMonth = invoiceMonth;
 		this.invoiceYear = invoiceYear;
+		this.readCompanyDataFromFile();
+		// this.businessAddress = new Address("1616 Index Ct.", "Renton", StateCode.WA,
+		// "98055");
 	}
 
 	// Add an invoice line item to this Invoice.
@@ -81,28 +96,87 @@ public final class Invoice {
 		for (InvoiceLineItem lineItem : this.invoiceItems) {
 			total += lineItem.getCharge();
 		}
-           return total;
+		return total;
 	}
 
 	// Get the total hours for this Invoice.
 	public int getTotalHours() {
 		int total = 0;
-		for(InvoiceLineItem lineItem: this.invoiceItems) {
+		for (InvoiceLineItem lineItem : this.invoiceItems) {
 			total += lineItem.getHours();
 		}
-          return total;
+		return total;
 	}
 
 	// Create a formatted string containing the printable invoice.
 	public String toReportString() {
-		return "toReportString";
 
+		InvoiceHeader header = new InvoiceHeader(companyName, businessAddress, client, LocalDate.now(),
+				LocalDate.of(this.invoiceYear, this.getInvoiceMonth(), 1));
+		InvoiceFooter footer = new InvoiceFooter(companyName);
+		StringBuilder invoiceString = new StringBuilder();
+
+		invoiceString.append(header.toString());
+		int pageNumber = 1;
+		for (InvoiceLineItem lineItem : invoiceItems) {
+			invoiceString.append(lineItem.toString());
+
+			pageNumber++;
+			if (pageNumber % 5 == 0) {
+				invoiceString.append("\n\n\n\n");
+				invoiceString.append(footer.toString());
+
+				footer.incrementPageNumber();
+				invoiceString.append(header.toString());
+			}
+		}
+		invoiceString.append(String.format("\nTotal:\n$%d", this.getTotalCharges()));
+		invoiceString.append("\n\n\n\n");
+		invoiceString.append(footer.toString());
+		return invoiceString.toString();
 	}
 
 	// Create a string representation of this object, suitable for printing.
 	public String toString() {
-		return  "Invoice toString";
-
+		return "Invoice toString";
 	}
 
+	private void readCompanyDataFromFile() {
+		InputStream stream = ClassLoader.getSystemResourceAsStream(PROP_FILE_NAME);
+		Reader reader = new InputStreamReader(stream);
+		int i;
+		StringBuilder companyData = new StringBuilder();
+		String companyAddress[] = { "" };
+
+		try {
+
+			while ((i = reader.read()) != -1) {
+				char c = (char) i;
+				if (c != '=') {
+					continue;
+				} else {
+					do {
+						i = reader.read();
+						if (i == -1) {
+							break;
+						}
+						c = (char) i;
+						companyData.append(c);
+
+					} while (c != '\n');
+				}
+			}
+			companyAddress = companyData.toString().split(System.lineSeparator()); // "\r\n" for files created on MS
+																					// Windows OS
+
+			reader.close();
+			stream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		companyName = companyAddress[0];
+		businessAddress = new Address(companyAddress[1], companyAddress[2], StateCode.valueOf(companyAddress[3]),
+				companyAddress[4]);
+	}
 }

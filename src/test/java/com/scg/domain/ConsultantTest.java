@@ -32,7 +32,7 @@ class ConsultantTest {
 	final void testToString() {
 		PersonalName name = new PersonalName("LastN", "FirstN", "M");
 		Consultant ct = new Consultant(name);
-		assertEquals("LastN FirstN M", ct.toString());
+		assertEquals("LastN, FirstN M", ct.toString());
 
 	}
 

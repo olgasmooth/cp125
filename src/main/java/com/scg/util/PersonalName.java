@@ -56,7 +56,7 @@ public final class PersonalName extends Object {
 
 	@Override
 	public String toString() {
-		return String.format("%s %s %s", this.lastName, this.firstName, this.middleName);
+		return String.format("%s, %s %s", this.lastName, this.firstName, this.middleName);
 	}
 	
 	@Override

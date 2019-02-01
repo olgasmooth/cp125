@@ -13,7 +13,7 @@ package com.scg.domain;
  */
 public final class InvoiceFooter {
 	private String businessName; // name of business to include in footer
-	private int pageNumber = 0;
+	private int pageNumber = 1;
 
 	// Construct an InvoiceFooter.
 	public InvoiceFooter(String businessName) {
@@ -27,7 +27,7 @@ public final class InvoiceFooter {
 
 	// Print the formatted footer.
 	public String toString() {
-		return this.businessName.toString();
+		return String.format("%s\nPage:	%d\n===================================================\n\n", this.businessName.toString(), this.pageNumber);
 	}
 
 }

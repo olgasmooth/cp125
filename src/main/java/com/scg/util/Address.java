@@ -19,7 +19,7 @@ public class Address {
 	private String postalCode; // the postal code.
 
 	// Construct an Address.
-	Address(String streetNumber, String city, StateCode state, String postalCode) {
+	public Address(String streetNumber, String city, StateCode state, String postalCode) {
 		this.streetNumber = streetNumber;
 		this.city = city;
 		this.state = state;
@@ -68,6 +68,6 @@ public class Address {
 	// city, state postal code
 
 	public String toString() {
-		return String.format("%s %s %s %s", this.streetNumber, this.city, this.state.toString(), this.postalCode);
+		return String.format("%s\n%s, %s %s", this.streetNumber, this.city, this.state.toString(), this.postalCode);
 	}
 }

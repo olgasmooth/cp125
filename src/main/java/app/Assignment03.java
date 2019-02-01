@@ -116,7 +116,8 @@ public final class Assignment03 {
         final List<Invoice> invoices = createInvoices(accounts, timeCards);
  
         // Print them
-        Console console = System.console();
+        //Console console = System.console(); ->>> this returns null in Eclipse :(
+        PrintStream console = System.out;
         console.printf("%n==================================================================================%n");
         console.printf("=============================== I N V O I C E S ==================================%n");
         console.printf("==================================================================================%n%n");

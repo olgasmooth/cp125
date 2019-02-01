@@ -8,18 +8,19 @@ package com.scg.domain;
  *
  */
 public enum Skill {
-	PROJECT_MANAGER("PROJECT MANAGER"), 
-	SOFTWARE_ENGINEER("SOFTWARE ENGINEER"), 
-	SOFTWARE_TESTER("SOFTWARE TESTER"),
-	SYSTEM_ARCHITECT("SYSTEM_ARCHITECT"), 
-	UNKNOWN_SKILL("UNKNOWN_SKILLS");
+	PROJECT_MANAGER("PROJECT MANAGER", 150), 
+	SOFTWARE_ENGINEER("SOFTWARE ENGINEER", 150), 
+	SOFTWARE_TESTER("SOFTWARE TESTER", 100),
+	SYSTEM_ARCHITECT("SYSTEM ARCHITECT", 200), 
+	UNKNOWN_SKILL("UNKNOWN SKILLS", 150);
 
-	private int Rate = 50;
+	private int Rate;
 
 	private final String skillName;
 
-	private Skill(String skillName) {
+	private Skill(String skillName, int rate) {
 		this.skillName = skillName;
+		this.Rate = rate;
 	}
 
 	// Getter for rate property

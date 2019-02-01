@@ -41,6 +41,10 @@ public final class ClientAccount implements Account {
 	public PersonalName getContact() {
 		return this.contact;
 	}
+	
+	public Address getAddress() {
+		return this.address;
+	}
 
 	public void setContact(PersonalName contact) {
 		this.contact = contact;

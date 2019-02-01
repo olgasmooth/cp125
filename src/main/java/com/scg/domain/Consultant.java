@@ -10,7 +10,7 @@ import com.scg.util.PersonalName;;
  *
  */
 public class Consultant {
-   com.scg.util.PersonalName name;
+   PersonalName name;
    
    public Consultant(PersonalName name) {
 	   this.name = name;

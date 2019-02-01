@@ -100,11 +100,13 @@ public class TimeCard {
 		StringBuilder str = new StringBuilder("====================================================================\n");
 		
 		str.append (
-		String.format("Consultant:%s %s %s                    Week Starting: %s\n\n", 
-		this.consultant.getName().getLastName(), 
-		this.consultant.getName().getFirstName(), 
-		this.consultant.getName().getMiddleName(),
-		this.getWeekStartingDay().toString()));
+//		String.format("Consultant:%s %s %s                    Week Starting: %s\n\n", 
+				this.toString());
+//		this.consultant.getName().getLastName(), 
+//		this.consultant.getName().getFirstName(), 
+//		this.consultant.getName().getMiddleName(),
+//		this.getWeekStartingDay().toString()));
+		
 		str.append("Billable Time:\n");
 		str.append("Account                      		Date        Hours  	Skill\n");
 		str.append("-----------------------------------------------------------------\n");
@@ -123,9 +125,9 @@ public class TimeCard {
 			}
 		}
 		
-		str.append("\nSummary:");
+		str.append("\nSummary:\n");
 		str.append(String.format("Total Billable: 				%d\n", this.getTotalBillableHours()));
-		str.append(String.format("Total Non-Billable:			%d\n", this.getTotalNonBillableHours()));
+		str.append(String.format("Total Non-Billable:				%d\n", this.getTotalNonBillableHours()));
 		str.append(String.format("Total hours:					%d\n", this.getTotalHours()));
 		
 		str.append("====================================================================\n");
@@ -139,9 +141,11 @@ public class TimeCard {
 	// String representation of this object, consisting of the consultant name and
 	// the time card week starting day.
 	public String toString() {
-		return String.format("%s %s %s %s", this.consultant.getName().getLastName(), 
-				this.consultant.getName().getFirstName(), 
-				this.consultant.getName().getMiddleName(), 
+		return String.format("Consultant:%s                          Week Starting: %s\n\n", 
+				this.consultant.toString(),
+//				this.consultant.getName().getLastName(), 
+//				this.consultant.getName().getFirstName(), 
+//				this.consultant.getName().getMiddleName(), 
 				this.getWeekStartingDay().getDayOfWeek());
 	}
 

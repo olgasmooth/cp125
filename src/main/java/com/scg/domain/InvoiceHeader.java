@@ -30,7 +30,19 @@ public final class InvoiceHeader {
 	
 	//Print this InvoiceHeader.
 	public String toString() {
-		return String.format("%s %s %s %s %s", this.businessName, this.businessAddress, this.client, this.invoiceDate.toString(), this.invoiceForMonth.toString());
+		StringBuilder str = new StringBuilder();
+		str.append(this.businessName);
+		str.append("\n");
+		str.append(this.businessAddress.toString());
+		str.append("\n\n");
+		
+		str.append(String.format("Invoice for:\n%s\n%s\n%s\n\n", this.client.getName(), this.client.getAddress().toString(), this.client.getContact().toString()));
+		str.append(String.format("Invoice For Month of: %s %d\n", this.invoiceForMonth.getMonth().toString(), this.invoiceForMonth.getYear()));
+		str.append(String.format("Invoice Date: %s\n\n", this.invoiceDate.toString()));
+		str.append("Date		Consultant				Skill			Hours\nCharge\n");
+		str.append("------------   -------------------------------------    --------------------    -------\n");
+		
+		return str.toString();
 		
 	}
 	
