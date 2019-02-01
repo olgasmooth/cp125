@@ -70,7 +70,7 @@ public class TimeCard {
 
 	// Getter for totalHours property.
 	public int getTotalHours() {
-		int totalHours  = 0;
+		int totalHours = 0;
 		for (ConsultantTime time : consultantHours) {
 			totalHours = totalHours + time.getHours();
 		}
@@ -98,55 +98,41 @@ public class TimeCard {
 	public String toReportString() {
 		// String date = formatter.format(this.getWeekStartingDay());
 		StringBuilder str = new StringBuilder("====================================================================\n");
-		
-		str.append (
-//		String.format("Consultant:%s %s %s                    Week Starting: %s\n\n", 
-				this.toString());
-//		this.consultant.getName().getLastName(), 
-//		this.consultant.getName().getFirstName(), 
-//		this.consultant.getName().getMiddleName(),
-//		this.getWeekStartingDay().toString()));
-		
+
+		str.append(this.toString());
 		str.append("Billable Time:\n");
 		str.append("Account                      		Date        Hours  	Skill\n");
 		str.append("-----------------------------------------------------------------\n");
 		for (ConsultantTime time : consultantHours) {
 			if (time.isBillable()) {
-				str.append(String.format("%s 			%s		%d 		%s\n", time.account.getName(), time.getDate().toString(), time.getHours(),  time.getSkill().toString()));
+				str.append(String.format("%s 			%s		%d 		%s\n", time.account.getName(),
+						time.getDate().toString(), time.getHours(), time.getSkill().toString()));
 			}
 		}
-		
+
 		str.append("\nNon-Billable Time:\n");
 		str.append("Account                      		Date        Hours  	Skill\n");
 		str.append("-----------------------------------------------------------------\n");
 		for (ConsultantTime time : consultantHours) {
 			if (!time.isBillable()) {
-				str.append(String.format("%s 			%s		%d 		%s\n", time.account.getName(), time.getDate().toString(), time.getHours(),  time.getSkill().toString()));
+				str.append(String.format("%s 			%s		%d 		%s\n", time.account.getName(),
+						time.getDate().toString(), time.getHours(), time.getSkill().toString()));
 			}
 		}
-		
+
 		str.append("\nSummary:\n");
 		str.append(String.format("Total Billable: 				%d\n", this.getTotalBillableHours()));
 		str.append(String.format("Total Non-Billable:				%d\n", this.getTotalNonBillableHours()));
 		str.append(String.format("Total hours:					%d\n", this.getTotalHours()));
-		
+
 		str.append("====================================================================\n");
 		return str.toString();
-		
-		
-//		return String.format("%s %s %s %s", this.consultant.getName().getLastName(), 
-				
 	}
 
 	// String representation of this object, consisting of the consultant name and
 	// the time card week starting day.
 	public String toString() {
-		return String.format("Consultant:%s                          Week Starting: %s\n\n", 
-				this.consultant.toString(),
-//				this.consultant.getName().getLastName(), 
-//				this.consultant.getName().getFirstName(), 
-//				this.consultant.getName().getMiddleName(), 
+		return String.format("Consultant:%s                          Week Starting: %s\n\n", this.consultant.toString(),
 				this.getWeekStartingDay().getDayOfWeek());
 	}
-
 }

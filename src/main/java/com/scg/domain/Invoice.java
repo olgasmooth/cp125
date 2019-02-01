@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.lang.Thread.State;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -49,6 +48,7 @@ public final class Invoice {
 		this.readCompanyDataFromFile();
 		// this.businessAddress = new Address("1616 Index Ct.", "Renton", StateCode.WA,
 		// "98055");
+		// this.companyName = "The Small Consulting Group";
 	}
 
 	// Add an invoice line item to this Invoice.
