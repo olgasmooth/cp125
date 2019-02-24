@@ -162,7 +162,7 @@ class ConsultantTimeTest {
 
 		Skill skillType = Skill.PROJECT_MANAGER;
 		ConsultantTime ct = new ConsultantTime(date, account, skillType, 8);
-		String expected = String.format("LastN, FirstN M KitKat true %s 8 PROJECT MANAGER", date.toString());
+		String expected = String.format("LastN FirstN M KitKat true %s 8 PROJECT MANAGER", date.toString());
 		assertEquals(expected, ct.toString());
 	}
 

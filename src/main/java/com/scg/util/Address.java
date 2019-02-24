@@ -12,7 +12,7 @@ import java.util.Objects;
  * @author olgas
  *
  */
-public class Address {
+public class Address implements Comparable<Address>{
 	private String streetNumber; // the street number.
 	private String city; // the city.
 	private StateCode state; // the state.
@@ -68,6 +68,19 @@ public class Address {
 	// city, state postal code
 
 	public String toString() {
-		return String.format("%s\n%s, %s %s", this.streetNumber, this.city, this.state.toString(), this.postalCode);
+		return String.format("%s %s %s %s", this.streetNumber, this.city, this.state.toString(), this.postalCode);
+	}
+
+	@Override
+	
+	public int compareTo(Address o) {
+		int diff =0;
+		if(this !=o) {
+			if((diff=streetNumber.compareTo(o.streetNumber))==0)
+				if((diff= city.compareTo(o.city))==0)
+					if((diff= state.compareTo(o.state))==0)
+						diff= postalCode.compareTo(o.postalCode);
+		}
+		return diff;
 	}
 }

@@ -5,7 +5,10 @@ package com.scg.domain;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Represents a time card capable of storing a collection of a consultant's
@@ -16,7 +19,7 @@ import java.util.List;
  * @author olgas
  *
  */
-public class TimeCard {
+public class TimeCard implements Comparable<TimeCard> {
 	Consultant consultant; // The Consultant whose information this TimeCard records.
 	LocalDate date; // The date of the first work day of the week this TimeCard records information
 					// for.
@@ -28,6 +31,53 @@ public class TimeCard {
 		this.date = weekStartingDay;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((consultant == null) ? 0 : consultant.hashCode());
+		result = prime * result + ((consultantHours == null) ? 0 : consultantHours.hashCode());
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TimeCard other = (TimeCard) obj;
+		if (consultant == null) {
+			if (other.consultant != null)
+				return false;
+		} else if (!consultant.equals(other.consultant))
+			return false;
+		if (consultantHours == null) {
+			if (other.consultantHours != null)
+				return false;
+		} else if (!consultantHours.equals(other.consultantHours))
+			return false;
+		if (date == null) {
+			if (other.date != null)
+				return false;
+		} else if (!date.equals(other.date))
+			return false;
+		return true;
+	}
+
 	// Add a ConsultantTime object to the collection maintained by this TimeCard.
 	public void addConsultantTime(ConsultantTime consultantTime) {
 		this.consultantHours.add(consultantTime);
@@ -37,13 +87,16 @@ public class TimeCard {
 	// Client.
 	public List<ConsultantTime> getBillableHoursForClient(String clientName) {
 		List<ConsultantTime> clientHours = new ArrayList<ConsultantTime>();
-		for (ConsultantTime hours : consultantHours) {
-			if (hours.getAccount().getName().equals(clientName) && hours.isBillable()) {
-				clientHours.add(hours);
-			}
-		}
-		return clientHours;
+//		for (ConsultantTime hours : consultantHours) {
+//			if (hours.getAccount().getName().equals(clientName) && hours.isBillable()) {
+//				clientHours.add(hours);
+//			}
+//		}
+		clientHours = consultantHours.stream()
+				.filter(c -> c.getAccount().getName().equals(clientName) && c.isBillable())
+				.collect(Collectors.toList());
 
+		return clientHours;
 	}
 
 	// Getter for consultant property.
@@ -99,7 +152,9 @@ public class TimeCard {
 		// String date = formatter.format(this.getWeekStartingDay());
 		StringBuilder str = new StringBuilder("====================================================================\n");
 
-		str.append(this.toString());
+		str.append(String.format("Consultant:%s %s %s                    Week Starting: %s\n\n",
+				this.consultant.getName().getLastName(), this.consultant.getName().getFirstName(),
+				this.consultant.getName().getMiddleName(), this.getWeekStartingDay().toString()));
 		str.append("Billable Time:\n");
 		str.append("Account                      		Date        Hours  	Skill\n");
 		str.append("-----------------------------------------------------------------\n");
@@ -120,19 +175,38 @@ public class TimeCard {
 			}
 		}
 
-		str.append("\nSummary:\n");
+		str.append("\nSummary:");
 		str.append(String.format("Total Billable: 				%d\n", this.getTotalBillableHours()));
-		str.append(String.format("Total Non-Billable:				%d\n", this.getTotalNonBillableHours()));
+		str.append(String.format("Total Non-Billable:			%d\n", this.getTotalNonBillableHours()));
 		str.append(String.format("Total hours:					%d\n", this.getTotalHours()));
 
 		str.append("====================================================================\n");
 		return str.toString();
+
+//		return String.format("%s %s %s %s", this.consultant.getName().getLastName(), 
+
 	}
 
 	// String representation of this object, consisting of the consultant name and
 	// the time card week starting day.
 	public String toString() {
-		return String.format("Consultant:%s                          Week Starting: %s\n\n", this.consultant.toString(),
+		return String.format("%s %s %s %s", this.consultant.getName().getLastName(),
+				this.consultant.getName().getFirstName(), this.consultant.getName().getMiddleName(),
 				this.getWeekStartingDay().getDayOfWeek());
 	}
+
+	@Override
+	public int compareTo(TimeCard arg0) {
+
+		int diff = 0;
+		if (this != arg0) {
+			if ((diff = this.getWeekStartingDay().compareTo(arg0.getWeekStartingDay())) == 0)
+				if ((diff = consultant.compareTo(arg0.consultant)) == 0)
+					if ((diff = Integer.compare(getTotalBillableHours(), arg0.getTotalBillableHours())) == 0)
+						diff = Integer.compare(getTotalNonBillableHours(), arg0.getTotalNonBillableHours());
+
+		}
+		return diff;
+	}
+
 }

@@ -56,7 +56,7 @@ public final class PersonalName extends Object {
 
 	@Override
 	public String toString() {
-		return String.format("%s, %s %s", this.lastName, this.firstName, this.middleName);
+		return String.format("%s %s %s", this.lastName, this.firstName, this.middleName);
 	}
 	
 	@Override
@@ -72,5 +72,15 @@ public final class PersonalName extends Object {
 		PersonalName obj2 = (PersonalName) other;
 		return (this.firstName.equals(obj2.firstName) && this.lastName.equals(obj2.lastName)
 				&& this.middleName.equals(obj2.middleName));
+	}
+
+	public int compareTo(PersonalName name) {
+		int diff = 0;
+		if(this!= name) {
+			if((diff = this.lastName.compareTo(name.getLastName())) == 0)	{
+		    diff = this.firstName.compareTo(name.getFirstName());
+			}
+		}
+		return diff;
 	}
 }

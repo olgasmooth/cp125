@@ -185,7 +185,7 @@ public final class ListFactory {
      * @param timeCards the time cards to print
      */
     public static void printTimeCards(final List<TimeCard> timeCards) {
-    	//Console console = System.console(); this returns null in Eclipse :(
+    	//Console console = System.console();
     	PrintStream console = System.out;
         for (final TimeCard timeCard : timeCards) {
         	console.printf("%s%n", timeCard.toReportString());

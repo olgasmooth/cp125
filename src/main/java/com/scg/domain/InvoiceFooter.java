@@ -22,12 +22,18 @@ public final class InvoiceFooter {
 
 	// Increment the current page number by one.
 	public void incrementPageNumber() {
-           pageNumber++;
+		pageNumber++;
+	}
+
+	// for testing
+	public int getPageNumber() {
+		return this.pageNumber;
 	}
 
 	// Print the formatted footer.
 	public String toString() {
-		return String.format("%s\nPage:	%d\n===================================================\n\n", this.businessName.toString(), this.pageNumber);
+		return String.format("%s\nPage:	%d\n===================================================\n\n",
+				this.businessName.toString(), this.pageNumber);
 	}
 
 }

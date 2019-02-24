@@ -3,17 +3,20 @@
  */
 package com.scg.domain;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import com.scg.util.Address;
 import com.scg.util.StateCode;
+import com.scg.util.Address;
 
 /**
  * Invoice encapsulates the attributes and behavior to create client invoices
@@ -29,7 +32,6 @@ import com.scg.util.StateCode;
  *
  */
 public final class Invoice {
-
 	static String companyName; // = "The Small Consulting Group";
 	static Address businessAddress;
 	static String PROP_FILE_NAME = "invoice.properties";
@@ -39,16 +41,11 @@ public final class Invoice {
 	Integer invoiceYear;
 	List<InvoiceLineItem> invoiceItems = new ArrayList<InvoiceLineItem>();
 
-	// Construct an Invoice for a client. The time period is set from the beginning
-	// to the end of the month specified.
+	//Construct an Invoice for a client. The time period is set from the beginning to the end of the month specified.
 	public Invoice(ClientAccount client, Month invoiceMonth, int invoiceYear) {
 		this.client = client;
 		this.invoiceMonth = invoiceMonth;
 		this.invoiceYear = invoiceYear;
-		this.readCompanyDataFromFile();
-		// this.businessAddress = new Address("1616 Index Ct.", "Renton", StateCode.WA,
-		// "98055");
-		// this.companyName = "The Small Consulting Group";
 	}
 
 	// Add an invoice line item to this Invoice.
@@ -62,14 +59,22 @@ public final class Invoice {
 	 * and add them to the collection of line items.
 	 */
 	public void extractLineItems(TimeCard timeCard) {
-//	List<ConsultantTime> clientHours = new ArrayList<ConsultantTime>();
-		for (ConsultantTime hours : timeCard.getBillableHoursForClient(this.getClientAccount().getName())) {
+		/*for (ConsultantTime hours : timeCard.getBillableHoursForClient(this.getClientAccount().getName())) {
 			if (hours.getDate().getMonth() == this.getInvoiceMonth()) {
 				InvoiceLineItem lineItem = new InvoiceLineItem(hours.getDate(), timeCard.consultant, hours.getSkill(),
 						hours.getHours());
 				this.addLineItem(lineItem);
 			}
-		}
+		}*/
+		
+		List<ConsultantTime> hours = timeCard.getBillableHoursForClient(this.getClientAccount().getName());
+
+        List<InvoiceLineItem> lineItems = hours.stream()
+                .filter(h -> h.getDate().getMonth() == this.getInvoiceMonth())
+                .map(h -> new InvoiceLineItem(h.getDate(), timeCard.consultant, h.getSkill(), h.getHours()))
+                .collect(Collectors.toList());
+
+        this.invoiceItems.addAll(lineItems);
 	}
 
 	// Get the client for this Invoice.
@@ -110,19 +115,20 @@ public final class Invoice {
 
 	// Create a formatted string containing the printable invoice.
 	public String toReportString() {
-
+		this.readCompanyDataFromFile();
 		InvoiceHeader header = new InvoiceHeader(companyName, businessAddress, client, LocalDate.now(),
 				LocalDate.of(this.invoiceYear, this.getInvoiceMonth(), 1));
 		InvoiceFooter footer = new InvoiceFooter(companyName);
 		StringBuilder invoiceString = new StringBuilder();
 
 		invoiceString.append(header.toString());
-		int pageNumber = 1;
+		int lineNumber = 1;
 		for (InvoiceLineItem lineItem : invoiceItems) {
 			invoiceString.append(lineItem.toString());
 
-			pageNumber++;
-			if (pageNumber % 5 == 0) {
+			lineNumber++;
+			if (lineNumber == 5) {
+				lineNumber = 1;
 				invoiceString.append("\n\n\n\n");
 				invoiceString.append(footer.toString());
 
@@ -138,45 +144,44 @@ public final class Invoice {
 
 	// Create a string representation of this object, suitable for printing.
 	public String toString() {
-		return "Invoice toString";
+		return this.toReportString();
+
 	}
 
 	private void readCompanyDataFromFile() {
-		InputStream stream = ClassLoader.getSystemResourceAsStream(PROP_FILE_NAME);
-		Reader reader = new InputStreamReader(stream);
-		int i;
+	//	File infile = new File("src\\main\\resources\\invoice.properties");
+		String filePath = String.format("src%smain%sresources%sinvoice.properties", File.separator, File.separator, File.separator);
+        File infile = new File(filePath);
+		FileInputStream stream = null;
+		try {
+			stream = new FileInputStream(infile);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 		StringBuilder companyData = new StringBuilder();
-		String companyAddress[] = { "" };
 
 		try {
-
-			while ((i = reader.read()) != -1) {
-				char c = (char) i;
-				if (c != '=') {
-					continue;
-				} else {
-					do {
-						i = reader.read();
-						if (i == -1) {
-							break;
-						}
-						c = (char) i;
-						companyData.append(c);
-
-					} while (c != '\n');
-				}
+			while (reader.ready()) {
+				String str = reader.readLine();
+				companyData.append(str.substring(str.indexOf("=") + 1));
+				companyData.append('\n');
 			}
-			companyAddress = companyData.toString().split(System.lineSeparator()); // "\r\n" for files created on MS
-																					// Windows OS
 
 			reader.close();
 			stream.close();
 		} catch (IOException e) {
+
 			e.printStackTrace();
 		}
+
+		String companyAddress[];
+		companyAddress = companyData.toString().split("\n");
 
 		companyName = companyAddress[0];
 		businessAddress = new Address(companyAddress[1], companyAddress[2], StateCode.valueOf(companyAddress[3]),
 				companyAddress[4]);
 	}
+
 }

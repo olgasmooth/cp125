@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public final class InvoiceLineItem {
 	LocalDate date; // date the service was provided
 	Consultant consultant; // name of consultant providing the service
-	Skill skill; // the sevice/skill provided
+	Skill skill; // the service/skill provided
 	int hours; // number of hours
 
 	// Construct an InvoiceLineItem
@@ -24,7 +24,8 @@ public final class InvoiceLineItem {
 	}
 
 	// Get the charge for this line item.
-	public int getCharge() {
+	public int getCharge(){
+
 		return this.getSkill().getRate() * this.getHours();
 	}
 
@@ -51,7 +52,7 @@ public final class InvoiceLineItem {
 	// Print the date, consultant, skill, hours and charge for this line item.
 	public String toString() {
 		return String.format("%s	%s				%s			%d\n%d\n", date.toString(), consultant.toString(),
-				skill.toString(), this.getHours(), this.getHours() * this.skill.getRate());
+				skill.toString(), this.getHours(), this.getCharge());
 	}
 
 }
