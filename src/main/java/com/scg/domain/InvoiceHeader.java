@@ -4,6 +4,7 @@
 package com.scg.domain;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import com.scg.util.Address;
 
@@ -29,6 +30,7 @@ public final class InvoiceHeader {
 
 	// Print this InvoiceHeader.
 	public String toString() {
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM dd, YYYY");
 		StringBuilder str = new StringBuilder();
 		str.append(this.businessName);
 		str.append("\n");
@@ -39,9 +41,9 @@ public final class InvoiceHeader {
 				this.client.getAddress().toString(), this.client.getContact().toString()));
 		str.append(String.format("Invoice For Month of: %s %d\n", this.invoiceForMonth.getMonth().toString(),
 				this.invoiceForMonth.getYear()));
-		str.append(String.format("Invoice Date: %s\n\n", this.invoiceDate.toString()));
-		str.append("Date		Consultant				Skill			Hours\nCharge\n");
-		str.append("------------   -------------------------------------    --------------------    -------\n");
+		str.append(String.format("Invoice Date: %s\n\n", dateFormatter.format(this.invoiceDate)));
+		str.append("Date		Consultant				Skill			Hours	 Charge\n");
+		str.append("------------   -------------------------------------    --------------------    -------  --------\n");
 
 		return str.toString();
 	}

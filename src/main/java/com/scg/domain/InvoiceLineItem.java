@@ -4,6 +4,7 @@
 package com.scg.domain;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author olgas
@@ -51,8 +52,9 @@ public final class InvoiceLineItem {
 
 	// Print the date, consultant, skill, hours and charge for this line item.
 	public String toString() {
-		return String.format("%s	%s				%s			%d\n%d\n", date.toString(), consultant.toString(),
-				skill.toString(), this.getHours(), this.getCharge());
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/YYYY");
+		return String.format("%-15s %-40s %-20s %8d %,10.2f\n", dateFormatter.format(date), consultant.toString(),
+				skill.toString(), this.getHours(), (float)this.getCharge());
 	}
 
 }

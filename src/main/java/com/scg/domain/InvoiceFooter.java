@@ -32,8 +32,8 @@ public final class InvoiceFooter {
 
 	// Print the formatted footer.
 	public String toString() {
-		return String.format("%s\nPage:	%d\n===================================================\n\n",
-				this.businessName.toString(), this.pageNumber);
+		return String.format("%s %67s %2d\n==================================================================================================\n\n",
+				this.businessName.toString(), "Page:", this.pageNumber);
 	}
 
 }
