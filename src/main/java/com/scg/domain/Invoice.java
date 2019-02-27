@@ -122,21 +122,24 @@ public final class Invoice {
 		StringBuilder invoiceString = new StringBuilder();
 
 		invoiceString.append(header.toString());
-		int lineNumber = 1;
+		int lineNumber = 0;
+		int currentItem = 0;
 		for (InvoiceLineItem lineItem : invoiceItems) {
 			invoiceString.append(lineItem.toString());
-
+			currentItem++;
 			lineNumber++;
 			if (lineNumber == 5) {
-				lineNumber = 1;
-				invoiceString.append("\n\n\n\n");
-				invoiceString.append(footer.toString());
+				lineNumber = 0;
 
-				footer.incrementPageNumber();
-				invoiceString.append(header.toString());
+				if(currentItem != invoiceItems.size()) {
+					invoiceString.append("\n\n\n\n");
+					invoiceString.append(footer.toString());
+					footer.incrementPageNumber();
+					invoiceString.append(header.toString());
+				}
 			}
 		}
-		invoiceString.append(String.format("\nTotal:\n$%d", this.getTotalCharges()));
+		invoiceString.append(String.format("\n%-83s %-4d %,.2f", "Total:", this.getTotalHours(), (float)this.getTotalCharges()));
 		invoiceString.append("\n\n\n\n");
 		invoiceString.append(footer.toString());
 		return invoiceString.toString();
@@ -183,5 +186,4 @@ public final class Invoice {
 		businessAddress = new Address(companyAddress[1], companyAddress[2], StateCode.valueOf(companyAddress[3]),
 				companyAddress[4]);
 	}
-
 }

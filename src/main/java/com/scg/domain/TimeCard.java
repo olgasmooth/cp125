@@ -4,6 +4,7 @@
 package com.scg.domain;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -83,8 +84,11 @@ public class TimeCard implements Comparable<TimeCard> {
 		this.consultantHours.add(consultantTime);
 	}
 
-	// Returns the billable hours (if any) in this TimeCard for the specified
-	// Client.
+	/**
+	 * 	Gets the billable hours (if any) in this TimeCard for the specified Client.
+	 * @param clientName - name of the client
+	 * @return Billable ConsultantTime List for the specified Client
+	 */
 	public List<ConsultantTime> getBillableHoursForClient(String clientName) {
 		List<ConsultantTime> clientHours = new ArrayList<ConsultantTime>();
 //		for (ConsultantTime hours : consultantHours) {
@@ -146,41 +150,46 @@ public class TimeCard implements Comparable<TimeCard> {
 		return this.date;
 	}
 
-	// Create a string representation of this object, suitable for printing the
-	// entire time card.
+
+	/**
+	 * Create a string representation of this object, 
+	 * suitable for printing the entire time card.
+	 * @return String representation of TimeCard
+	 */
 	public String toReportString() {
-		// String date = formatter.format(this.getWeekStartingDay());
-		StringBuilder str = new StringBuilder("====================================================================\n");
+		DateTimeFormatter midDateFormatter = DateTimeFormatter.ofPattern("MMM dd, YYYY");
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/YYYY");
+		StringBuilder str = new StringBuilder("===============================================================================\n");
 
 		str.append(String.format("Consultant:%s %s %s                    Week Starting: %s\n\n",
 				this.consultant.getName().getLastName(), this.consultant.getName().getFirstName(),
-				this.consultant.getName().getMiddleName(), this.getWeekStartingDay().toString()));
+				this.consultant.getName().getMiddleName(), midDateFormatter.format(this.getWeekStartingDay())));
 		str.append("Billable Time:\n");
-		str.append("Account                      		Date        Hours  	Skill\n");
-		str.append("-----------------------------------------------------------------\n");
+		str.append("Account                      		 Date         Hours   Skill\n");
+		str.append("---------------------------------------  ----------  ------  ------------------\n");
 		for (ConsultantTime time : consultantHours) {
 			if (time.isBillable()) {
-				str.append(String.format("%s 			%s		%d 		%s\n", time.account.getName(),
-						time.getDate().toString(), time.getHours(), time.getSkill().toString()));
+				str.append(String.format("%-40s %-16s %-3d %s\n", time.account.getName(),
+						dateFormatter.format(time.getDate()), time.getHours(), time.getSkill().toString()));
 			}
 		}
 
 		str.append("\nNon-Billable Time:\n");
-		str.append("Account                      		Date        Hours  	Skill\n");
-		str.append("-----------------------------------------------------------------\n");
+		str.append("Account                      		 Date         Hours   Skill\n");
+		str.append("---------------------------------------  ----------  ------  ------------------\n");
 		for (ConsultantTime time : consultantHours) {
 			if (!time.isBillable()) {
-				str.append(String.format("%s 			%s		%d 		%s\n", time.account.getName(),
+				str.append(String.format("%-40s %-16s %-3d %s\n", time.account.getName(),
 						time.getDate().toString(), time.getHours(), time.getSkill().toString()));
 			}
 		}
 
-		str.append("\nSummary:");
-		str.append(String.format("Total Billable: 				%d\n", this.getTotalBillableHours()));
-		str.append(String.format("Total Non-Billable:			%d\n", this.getTotalNonBillableHours()));
-		str.append(String.format("Total hours:					%d\n", this.getTotalHours()));
+		str.append("\nSummary:\n");
+		str.append(String.format("%-55s %2d\n", "Total Billable:", this.getTotalBillableHours()));
+		str.append(String.format("%-55s %2d\n", "Total Non-Billable: ", this.getTotalNonBillableHours()));
+		str.append(String.format("%-55s %2d\n", "Total hours:", this.getTotalHours()));
 
-		str.append("====================================================================\n");
+		str.append("===============================================================================\n");
 		return str.toString();
 
 //		return String.format("%s %s %s %s", this.consultant.getName().getLastName(), 
