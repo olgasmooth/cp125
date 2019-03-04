@@ -96,9 +96,8 @@ public final class Assignment04 {
         
         ListFactory.deserializeList(timeCards2, "TimeCardList.ser");
         ListFactory.deserializeList(accounts2, "ClientList.ser");
-        System.out.println("Original timecards =====================================================");
         ListFactory.printTimeCards(timeCards);
-        System.out.println("\n\n\n Read timecards =====================================================");
+
         ListFactory.printTimeCards(timeCards2);
         System.out.println("\n\n\n");
         
