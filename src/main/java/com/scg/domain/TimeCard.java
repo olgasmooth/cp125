@@ -3,6 +3,7 @@
  */
 package com.scg.domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.stream.Stream;
  * @author olgas
  *
  */
-public class TimeCard implements Comparable<TimeCard> {
+public class TimeCard implements Comparable<TimeCard>, Serializable {
 	Consultant consultant; // The Consultant whose information this TimeCard records.
 	LocalDate date; // The date of the first work day of the week this TimeCard records information
 					// for.

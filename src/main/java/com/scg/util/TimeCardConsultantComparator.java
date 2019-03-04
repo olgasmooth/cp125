@@ -26,7 +26,4 @@ public final class TimeCardConsultantComparator implements Comparator<TimeCard> 
 		}
 		return diff;
 	}
-	
-	
-
 }

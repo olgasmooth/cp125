@@ -3,6 +3,8 @@
  */
 package com.scg.domain;
 
+import java.io.Serializable;
+
 /**
  * Consepts for the account be not billable: sick, vacation, business developent
  * 
@@ -10,10 +12,10 @@ package com.scg.domain;
  *
  */
 
-public enum NonBillableAccount implements Account {
-	SICK_LEAVE("SICK LEAVE"), 
-	BUSINESS_DEVELOPMENT("BUSINESS DEVELOPMENT"), 
-	VACATION("VACATION");
+public enum NonBillableAccount implements Account, Serializable {
+	SICK_LEAVE("Sick Leave"), 
+	BUSINESS_DEVELOPMENT("Business Development"), 
+	VACATION("Vacation");
 
 	public final String accountName;
   

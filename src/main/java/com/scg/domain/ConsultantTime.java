@@ -3,6 +3,7 @@
  */
 package com.scg.domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
@@ -15,7 +16,7 @@ import java.util.Objects;
  * @author olgas
  *
  */
-public final class ConsultantTime {
+public final class ConsultantTime implements Serializable{
 	LocalDate date; // The date this instance occurred
 	Account account; // The account to charge the hours to; either a Client or NonBillableAccount.
 	Skill skillType; // The skill type

@@ -3,16 +3,18 @@
  */
 package com.scg.domain;
 
+import java.io.Serializable;
+
 /**
  * @author olgas
  *
  */
-public enum Skill {
-	PROJECT_MANAGER("PROJECT MANAGER", 150), 
-	SOFTWARE_ENGINEER("SOFTWARE ENGINEER", 150), 
-	SOFTWARE_TESTER("SOFTWARE TESTER", 100),
-	SYSTEM_ARCHITECT("SYSTEM ARCHITECT", 200), 
-	UNKNOWN_SKILL("UNKNOWN_SKILLS", 150);
+public enum Skill implements Serializable{
+	PROJECT_MANAGER("Project Manager", 150), 
+	SOFTWARE_ENGINEER("Software Engineer", 150), 
+	SOFTWARE_TESTER("Software Tester", 100),
+	SYSTEM_ARCHITECT("System Architect", 200), 
+	UNKNOWN_SKILL("Unknown Skill", 150);
 
 	private int Rate;
 

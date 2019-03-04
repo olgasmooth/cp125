@@ -3,13 +3,14 @@
  */
 package com.scg.util;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * @author olgas
  *
  */
-public final class PersonalName extends Object {
+public final class PersonalName implements Serializable {
 	private String lastName;
 	private String firstName;
 	private String middleName;

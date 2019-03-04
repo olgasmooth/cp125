@@ -3,6 +3,7 @@
  */
 package com.scg.util;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Objects;
  * @author olgas
  *
  */
-public class Address implements Comparable<Address>{
+public class Address implements Comparable<Address>, Serializable{
 	private String streetNumber; // the street number.
 	private String city; // the city.
 	private StateCode state; // the state.

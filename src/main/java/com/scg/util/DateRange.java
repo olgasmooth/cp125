@@ -3,13 +3,9 @@
  */
 package com.scg.util;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * Encapsulates a range of two dates, inclusive of the start date and end date.
@@ -17,7 +13,11 @@ import java.util.Locale;
  * @author olgas
  *
  */
-public final class DateRange {
+public final class DateRange implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7594440073026820719L;
 	LocalDate startDate;
 	LocalDate endDate;
 

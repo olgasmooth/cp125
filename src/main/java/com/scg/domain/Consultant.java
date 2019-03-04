@@ -3,14 +3,42 @@
  */
 package com.scg.domain;
 
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
+
 import com.scg.util.PersonalName;
 
 /**
  * @author olga
  *
  */
-public class Consultant implements Comparable<Consultant> {
-	/* (non-Javadoc)
+public class Consultant implements Comparable<Consultant>, Serializable {
+	PersonalName name;
+
+	private Object writeReplace() {
+		return new SerializationProxy(this);
+	}
+
+	private void readObject(ObjectInputStream ois) throws InvalidObjectException {
+		throw new InvalidObjectException("Proxy required");
+	}
+
+	private static class SerializationProxy implements Serializable {
+		private PersonalName name;
+
+		SerializationProxy(final Consultant consultant) {
+			name = consultant.name;
+		}
+
+		private Object readResolve() {
+			return new Consultant(name);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -21,7 +49,9 @@ public class Consultant implements Comparable<Consultant> {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -41,7 +71,6 @@ public class Consultant implements Comparable<Consultant> {
 		return true;
 	}
 
-	com.scg.util.PersonalName name;
 
 	public Consultant(PersonalName name) {
 		this.name = name;

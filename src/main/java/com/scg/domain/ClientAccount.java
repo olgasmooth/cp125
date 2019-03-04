@@ -11,6 +11,10 @@ import com.scg.util.PersonalName;
  *
  */
 public final class ClientAccount implements Account, Comparable<ClientAccount> {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3937455422934292629L;
 	PersonalName contact; // person's name of contact
 	String Name; // company name
 	boolean isBillable;
