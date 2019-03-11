@@ -38,8 +38,8 @@ public class HumanResourceManager {
 	public void acceptResignation(Consultant c) {
 		TerminationEvent event = new TerminationEvent(this, c, true);
 		  TerminationListener[] listeners = listenerList.getListeners(TerminationListener.class);
-	        for (TerminationListener pl : listeners) {
-	            pl.voluntaryTermination(event);
+	        for (TerminationListener tl : listeners) {
+	            tl.voluntaryTermination(event);
 	        }
 	}
 	
@@ -49,8 +49,8 @@ public class HumanResourceManager {
 	public void terminate(Consultant c) {
 		TerminationEvent event = new TerminationEvent(this, c, false);
 		  TerminationListener[] listeners = listenerList.getListeners(TerminationListener.class);
-	        for (TerminationListener pl : listeners) {
-	            pl.forcedTermination(event);
+	        for (TerminationListener tl : listeners) {
+	            tl.forcedTermination(event);
 	        }
 	}
 
