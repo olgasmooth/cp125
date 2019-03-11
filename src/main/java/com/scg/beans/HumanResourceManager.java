@@ -26,7 +26,6 @@ public class HumanResourceManager {
 	 * constructor
 	 */
 	public HumanResourceManager() {
-		// this.pcs = new PropertyChangeSupport(this);
 	}
 
 	/**
