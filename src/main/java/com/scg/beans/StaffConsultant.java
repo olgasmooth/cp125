@@ -190,22 +190,4 @@ public final class StaffConsultant extends Consultant implements Serializable {
 	public void removeVetoableChangeListener(VetoableChangeListener l) {
 vcs.removeVetoableChangeListener(PAY_RATE_PROPERTY_NAME, l);
 	}
-
-
-//	public StaffConsultant(PersonalName name) {
-//		super(name);
-//		// TODO Auto-generated constructor stub
-//	}
-
-	/**
-	 * 
-	 */
-
-
-//	@Override
-//	public int compareTo(Consultant arg0) {
-//		// TODO Auto-generated method stub
-//		return 0;
-//	}
-
 }
